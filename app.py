@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import joblib
 
-st.set_page_config(page_title="CTEPH风险预测", page_icon="🫀", layout="wide")
+st.set_page_config(page_title="CTEPD风险预测", page_icon="🫀", layout="wide")
 
 @st.cache_resource
 def load_model():
@@ -12,14 +12,14 @@ def load_model():
     scaler = joblib.load('scaler.pkl')
     return model, imputer, scaler
 
-st.title("🫀 CTEPH风险预测在线计算器")
-st.markdown("基于XGBoost模型，评估PTE患者进展为CTEPD/CTEPH的风险")
+st.title("🫀 CTEPD风险预测在线计算器")
+st.markdown("基于XGBoost模型，评估PTE患者进展为CTEPD的风险")
 
 st.sidebar.header("请输入患者信息")
 
 d_dimer = st.sidebar.number_input("D-二聚体 (mg/L)", value=0.5, step=0.1)
 pe_history = st.sidebar.selectbox("肺栓塞病史", [0,1], format_func=lambda x: "有" if x==1 else "无")
-heart_failure = st.sidebar.selectbox("心衰", [0,1], format_func=lambda x: "有" if x==1 else "无")
+heart_failure = st.sidebar.selectbox("心力衰竭", [0,1], format_func=lambda x: "有" if x==1 else "无")
 stroke = st.sidebar.selectbox("14天内脑卒中", [0,1], format_func=lambda x: "有" if x==1 else "无")
 wbc = st.sidebar.number_input("白细胞计数 (×10^9/L)", value=7.0, step=0.5)
 
@@ -35,7 +35,7 @@ if st.sidebar.button("开始风险评估", type="primary"):
     st.markdown("---")
     col1, col2 = st.columns(2)
     with col1:
-        st.metric("预测CTEPH风险概率", f"{prob:.2%}")
+        st.metric("预测CTEPD风险概率", f"{prob:.2%}")
     with col2:
         if prob >= 0.5:
             st.error("⚠️ 高风险患者，建议进一步评估")
